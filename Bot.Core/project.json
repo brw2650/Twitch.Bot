@@ -18,7 +18,7 @@
     "System.Net.Http": "4.0.1-beta-23516"
   },
   "commands": {
-    "Test": "Bot.Core"
+    "Run": "Bot.Core"
   },
   "frameworks": {
     "dnx451": { },
