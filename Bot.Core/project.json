@@ -1,32 +1,21 @@
 {
-  "authors": [ "Ben" ],
+  "version": "1.0.0-*",
   "buildOptions": {
+    "debugType": "portable",
     "emitEntryPoint": true
   },
-  "runtimes": {
-    "win10-x64": {}
-  },
-  "commands": {
-    "Run": "Bot.Core"
-  },
   "dependencies": {
-    "Microsoft.CSharp": "4.0.1",
-    "Newtonsoft.Json": "9.0.1",
-    "System.Collections.Concurrent": "4.0.12",
-    "System.Console": "4.0.0",
-    "System.Net.Http": "4.1.0",
-    "System.Net.Sockets": "4.1.0",
-    "System.Runtime.InteropServices": "4.1.0",
-    "System.Threading": "4.0.11"
+    "Newtonsoft.Json": "9.0.1"
   },
-  "description": "Bot.Core Console Application",
   "frameworks": {
-    "dnxcore50": {
-      "dependencies": {      }
+    "netcoreapp1.0": {
+      "dependencies": {
+        "Microsoft.NETCore.App": {
+          "type": "platform",
+          "version": "1.0.0"
+        }
+      },
+      "imports": "dnxcore50"
     }
-  },
-  "tooling": {
-    "defaultNamespace": "Bot.Core"
-  },
-  "version": "1.0.0-*"
+  }
 }

@@ -5,11 +5,9 @@ using System.Threading.Tasks;
 using System.Collections.Concurrent;
 using System.Threading;
 
-namespace Bot.Core
-{
+namespace Bot.Core {
 
-    public class MessageSender
-    {
+    public class MessageSender {
         private TextWriter Output { get; }
 
         private ConcurrentDictionary<Guid, string> MessageQueue { get; }
@@ -26,8 +24,7 @@ namespace Bot.Core
 
         private CancellationTokenSource TokenSource { get; }
 
-        public MessageSender(TextWriter output, string channel)
-        {
+        public MessageSender(TextWriter output, string channel) {
             this.Output = output;
             this.MessageQueue = new ConcurrentDictionary<Guid, string>();
             this.Channel = channel;
@@ -37,39 +34,29 @@ namespace Bot.Core
             Task.Factory.StartNew(() => SendMessagesJob(token), token);
         }
 
-        ~MessageSender()
-        {
+        ~MessageSender() {
             TokenSource.Cancel();
         }
 
-        public void AddMessage(string message)
-        {
+        public void AddMessage(string message) {
             MessageQueue.TryAdd(Guid.NewGuid(), message);
         }
 
-        private async Task SendMessagesJob(CancellationToken token)
-        {
+        private async Task SendMessagesJob(CancellationToken token) {
             var running = true;
-            while (running)
-            { //run forever sending messages
-                if (token.IsCancellationRequested)
-                {
+            while (running) { //run forever sending messages
+                if (token.IsCancellationRequested) {
                     running = false;
                 }
-                if (!MessageQueue.Any())
-                {
+                if (!MessageQueue.Any()) {
                     await Task.Delay(1000);
-                }
-                else
-                {
+                } else {
                     var messageItem = MessageQueue.LastOrDefault();
                     var message = messageItem.Value;
-                    if (GlobalTimer == null || GlobalTimer.IsCompleted)
-                    {
+                    if (GlobalTimer == null || GlobalTimer.IsCompleted) {
                         GlobalTimer = Task.Run(() => StartGlobalTimer());
                     }
-                    if (MessagesSent >= MaxMessages)
-                    {
+                    if (MessagesSent >= MaxMessages) {
                         await GlobalTimer;
                     }
                     Output.Write("PRIVMSG " + Channel + " :" + message + "\r\n");
@@ -82,8 +69,7 @@ namespace Bot.Core
             }
         }
 
-        private async Task StartGlobalTimer()
-        {
+        private async Task StartGlobalTimer() {
             await Task.Delay(GlobalTime);
             MessagesSent = 0;
         }
